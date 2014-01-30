@@ -1,6 +1,39 @@
+#include <mega328p.h>
+#include <ds18b20.h>
+#include <1wire.h>
+// Standard Input/Output functions
+#include <stdio.h>
+#include <delay.h>
+#asm  
+  .equ __w1_port=0xB; PORTD
+  .equ __w1_bit=7; 
+#endasm
+
+
+int firststart=3; 
+int temp1;
+int temp2;
+int data;
+int temp;
+int pwm;
+
+
+ void writetemp()
+{
+                        temp=ds18b20_temperature(0); 
+          if (temp>1000){            
+             temp=4096-temp;          
+             temp=-temp;                
+          }
+          printf("t=%i C",temp);    
+
+}
+
+
+
 void main(void)
 {
-int startUDR0=UDR0;
+ int startUDR0=UDR0;
 
 
 devices = w1_init();
@@ -96,15 +129,20 @@ else
               if (temp>temp2)
                 {   
                     PORTB=0x00;   
-                outtemp();
+                    writetemp();
                     printf("Thermo OFF");
                 }   
                 
                 else if(temp<temp1)
                 {      
                     PORTB=0xFF; 
-                    outtemp();
+                    writetemp();
                     printf("Thermo ON");
                 }
         }
 }
+
+
+
+}
+
