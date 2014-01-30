@@ -1,3 +1,9 @@
+#include <mega328p.h>
+#include <ds18b20.h>
+#include <1wire.h>
+#include <stdio.h> 
+#include <delay.h>
+
 void main(void)
 {
 w1_init();
